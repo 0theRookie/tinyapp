@@ -14,6 +14,11 @@ app.get("/", (request, response) => {
 app.get("/urls.json", (request, response) => {
   response.json(urlDatabase);
 })
+//gets request to /hello path and responds with cb func, sending html that
+// will be rendered in the browser
+app.get("/hello", (request, response) => {
+  response.send("<html><body> Hello<b>World</b></body></html>\n")
+})
 
 //Server listener - waits for request and responds
 app.listen(PORT, () => {
