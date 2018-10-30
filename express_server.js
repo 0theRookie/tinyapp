@@ -7,3 +7,7 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com"
 }
 
+app.get("/", (request, response) => {
+  response.send("Hello traveller!")
+})
+
