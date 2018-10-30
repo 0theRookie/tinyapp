@@ -11,8 +11,12 @@ const urlDatabase = {
 app.get("/", (request, response) => {
   response.send("Hello traveller!")
 })
+app.get("/urls.json", (request, response) => {
+  response.json(urlDatabase);
+})
 
 //Server listener - waits for request and responds
 app.listen(PORT, () => {
   console.log(`App listening on port : ${PORT}!`)
 })
+
