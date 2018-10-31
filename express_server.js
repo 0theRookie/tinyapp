@@ -42,7 +42,7 @@ app.post("/urls", (req, res) => {
   //call random string func
   urlDatabase[shortened] = req.body.longURL;
   console.log(shortened);
-  res.send("Ok");         // Respond with 'Ok' (we will replace this)
+  res.redirect(`http://localhost:8080/urls/${shortened}`);         // Respond with 'Ok' (we will replace this)
   console.log(urlDatabase);
 });
 
