@@ -13,14 +13,14 @@ const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 }
+//use random string function
 
 function generateRandomString() {
-  var stringKey = "";
-  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let stringKey = "";
+  let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
  
   for (var i = 0; i < 6; i++){
     stringKey += possible.charAt(Math.floor(Math.random() * possible.length));
-
   }
  
   return stringKey;
@@ -37,8 +37,13 @@ app.get("/urls/new", (req, res) => {
 });
 
 app.post("/urls", (req, res) => {
+  let shortened = generateRandomString();
   console.log(req.body.longURL);  // debug statement to see POST parameters
+  //call random string func
+  urlDatabase[shortened] = req.body.longURL;
+  console.log(shortened);
   res.send("Ok");         // Respond with 'Ok' (we will replace this)
+  console.log(urlDatabase);
 });
 
 
