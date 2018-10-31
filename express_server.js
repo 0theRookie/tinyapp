@@ -32,14 +32,13 @@ app.get("/", (req, res) => {
   res.redirect("/urls");
 })
 
-
+// |--------- /urls ---------|
 app.get( "/urls", (req, res) => { 
   let templateVars = { urls: urlDatabase};
   res.render("pages/urls_index", templateVars);
 });
 app.post("/urls", (req, res) => {
   let shortened = generateRandomString();//shortened url string
-  //call random string func
   urlDatabase[shortened] = req.body.longURL;
   let longURL = `http://localhost:8080/urls/${shortened}`;
   res.redirect(longURL);        //redirects to give short url
@@ -49,6 +48,12 @@ app.post("/urls", (req, res) => {
 
 app.get("/urls/new", (req, res) => {
   res.render("pages/urls_new");
+})
+
+//|--------- /urls/:id ---------|
+
+app.post("/urls/:id/edit", (req, res) => {
+  res.redirect("/urls");
 })
 
 
