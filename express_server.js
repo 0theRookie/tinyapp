@@ -28,29 +28,38 @@ function generateRandomString() {
 
 //GET request + handler --> gets request
 // for root, renders response as index page
-app.get("/", (req, res) => {
+app.get("/", (req, res) => { 
   res.redirect("/urls");
 })
 
-app.get( "/urls", (req, res) => {
-  let templateVars = { urls: urlDatabase}
+
+app.get( "/urls", (req, res) => { 
+  let templateVars = { urls: urlDatabase};
   res.render("pages/urls_index", templateVars);
 });
 app.post("/urls", (req, res) => {
-  let shortened = generateRandomString();
+  let shortened = generateRandomString();//shortened url string
   //call random string func
   urlDatabase[shortened] = req.body.longURL;
-  let longURL = `http://localhost:8080/urls/${shortened}`
+  let longURL = `http://localhost:8080/urls/${shortened}`;
   res.redirect(longURL);        //redirects to give short url
   console.log(urlDatabase);
 });
 
+
 app.get("/urls/new", (req, res) => {
-  res.render("pages/urls_new")
+  res.render("pages/urls_new");
 })
 
 
-app.get("/urls/:id", (req, res) => {
+app.post("/urls/:id/delete", (req, res) => {
+  delete urlDatabase[req.params.id];
+  res.redirect("/urls");
+})
+
+
+
+app.get("/urls/:id", (req, res) => {//renders new shortened url from (pages/urls_new)
   let templateVars = { 
     shortURL: req.params.id, 
     longURL: urlDatabase[req.params.id]
