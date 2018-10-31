@@ -15,10 +15,11 @@
         <%= shortURL %> - <%= longURL %>
       
     </li>
+    <a href="/urls">Home</a>
     <form action="/urls/<%= shortURL %>/edit" method="POST" style="margin:150px;">
-        <label for="longURL">Enter a URL:</label>
-        <input id="longURL" type="text" name="longURL" placeholder="http://" style="width: 300px">
-        <input type="submit" value="Submit">
+        <label for="longURL">Edit URL:</label>
+        <input id="longURL" value="<%= longURL %>" type="text" name="longURL" placeholder="http://" style="width: 300px">
+        <input type="submit" value="Update">
       </form>
             
 </ul>

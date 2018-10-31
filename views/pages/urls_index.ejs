@@ -13,12 +13,17 @@
     <%for(url in urls) { %>
       <li>
        
-        <%= url %> - <a href='#' ><%= urls[url] %></a>
-      
-      </li>
+        <%= url %> - <a href='#' ><%= urls[url] %></a>  
         <form method="POST" action="/urls/<%= url %>/delete">
           <button>Delete</button>
       </form>
+      <form method="GET" action="/urls/<%= url %>">
+        <button>Edit</button>
+    </form>
+      
+      
+      </li>
+    
 
     <% }; %>
   </ul>

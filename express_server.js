@@ -1,12 +1,15 @@
 const express = require('express');//requiring express
+const cookieParser = require('cookie-parser');
+
 const app = express();
-const PORT = 8080;//setting port to listen on
 const bodyParser = require('body-parser');
 
+const PORT = 8080;//setting port to listen on
 
 // set the view engine to ejs
 app.set("view engine", "ejs");
 
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended: true}));
 
 const urlDatabase = {
@@ -53,6 +56,14 @@ app.get("/urls/new", (req, res) => {
 //|--------- /urls/:id ---------|
 
 app.post("/urls/:id/edit", (req, res) => {
+  // 1. what is :id (ie: shorturl)
+  // 2. need to take that :id/shorturl and find it in db
+  // 3. change the value of that shorturl in db to the new longurl
+ 
+  let shortUrl = req.params.id;
+
+  urlDatabase[shortUrl] = req.body.longURL;
+  
   res.redirect("/urls");
 })
 
