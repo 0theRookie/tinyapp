@@ -22,8 +22,14 @@ app.get("/urls", (req, res) => {
   res.render("pages/urls_index", templateVars);
 })
 
-app.git("/urls/:id", (req, res) => {
-  let templateVars = { shortURL: req.params.id }
+
+app.get("/urls/:id", (req, res) => {
+  let templateVars = { 
+    shortURL: req.params.id, 
+    longURL: urlDatabase[req.params.id]
+  };
+  console.log(templateVars);
+  res.render("pages/urls_show", templateVars);
 })
 
 

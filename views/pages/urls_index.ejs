@@ -4,12 +4,16 @@
   <title>TinyApp</title>
 </head>
 <body>
-    <h1>Some urls:</h1>
-    <ul> 
-        <%for(url in urls) { %>
-        <li><%= url %> - <%= urls[url] %></li>
-        <a href='#' >link</a>
+  <header>
+    <% include ../partials/_header %>
+  </header>
+            
+  <h1>Some urls:</h1>
+  <ul> 
+    <%for(url in urls) { %>
+      <li><%= url %> - <%= urls[url] %></li>
+      <a href='#' >link</a>
     <% }; %>
-</ul>
+  </ul>
 </body>
 </html>
