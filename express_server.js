@@ -29,22 +29,25 @@ function generateRandomString() {
 //GET request + handler --> gets request
 // for root, renders response as index page
 app.get("/", (req, res) => {
-  res.send("Hi! This works!");
+  res.redirect("/urls");
 })
 
-app.get("/urls/new", (req, res) => {
-  res.render("pages/urls_new");
+app.get( "/urls", (req, res) => {
+  let templateVars = { urls: urlDatabase}
+  res.render("pages/urls_index", templateVars);
 });
-
 app.post("/urls", (req, res) => {
   let shortened = generateRandomString();
-  console.log(req.body.longURL);  // debug statement to see POST parameters
   //call random string func
   urlDatabase[shortened] = req.body.longURL;
-  console.log(shortened);
-  res.redirect(`http://localhost:8080/urls/${shortened}`);         // Respond with 'Ok' (we will replace this)
+  let longURL = `http://localhost:8080/urls/${shortened}`
+  res.redirect(longURL);        //redirects to give short url
   console.log(urlDatabase);
 });
+
+app.get("/urls/new", (req, res) => {
+  res.render("pages/urls_new")
+})
 
 
 app.get("/urls/:id", (req, res) => {
