@@ -13,27 +13,19 @@ const urlDatabase = {
 //GET request + handler --> gets request
 // for root, renders response as index page
 app.get("/", (req, res) => {
-  res.render("pages/index");
+  res.send("Hi! This works!");
 })
 
 
-// app.get("/urls.json", (request, response) => {
-//   response.json(urlDatabase);
-// })
-
-
-app.get("/about", (req, res) => {
-  res.render("pages/about");
+app.get("/urls", (req, res) => {
+  let templateVars = { urls: urlDatabase };
+  res.render("pages/urls_index", templateVars);
 })
 
+app.git("/urls/:id", (req, res) => {
+  let templateVars = { shortURL: req.params.id }
+})
 
-//gets request to /hello path and responds with cb func, sending html that
-// will be rendered in the browser -->
-
-
-// app.get("/hello", (request, response) => {
-//   response.send("<html><body> Hello<b>World</b></body></html>\n")
-// })
 
 //Server listener - waits for request and responds
 app.listen(PORT, () => {
