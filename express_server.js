@@ -26,6 +26,7 @@ const users = {
     password: "todayisawaladybug"
   }
 }
+
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
@@ -59,6 +60,7 @@ app.get( "/urls", (req, res) => {
   if(req.cookies){
 
     console.log("Cookie found!");
+    console.log(req.cookies.username);
   }
   let templateVars = { urls: urlDatabase, username: req.cookies.username};
   res.render("pages/urls_index", templateVars);
@@ -93,7 +95,7 @@ app.post("/urls/:id/edit", (req, res) => {
   res.redirect("/urls");
 })
 
-
+//deletes a URL entry from database
 app.post("/urls/:id/delete", (req, res) => {
   delete urlDatabase[req.params.id];
   res.redirect("/urls");
@@ -118,8 +120,23 @@ app.get("/register", (req, res) => {
   res.render("pages/register");
 })
 app.post("/register", (req, res) => {
-  console.log(req.cookie);
-  res.send("Good Job!");
+  const email = req.body.email;
+  const password = req.body.password;
+  const id = generateRandomString();
+
+  const newUser = {
+    "id": id,
+    "email": email,
+    "password": password
+  }
+
+  users[id] = newUser;
+  // users.id["email"] = email;
+  // users.id["password"] = password;
+
+  console.log(users);
+
+  res.redirect("/urls");
 })
 
 
