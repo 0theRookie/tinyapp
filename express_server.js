@@ -13,6 +13,19 @@ app.set("view engine", "ejs");
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended: true}));
 
+
+const users = {
+  "Bert": {
+    id: "Bert",
+    email: "bertismuchsmarterthanyou@bertcanmakewebsites.com",
+    password: "gotoyourhappyplace"
+  },
+  "Ernie": {
+    id: "Ernie",
+    email: "absolutemelvin@gmail.com",
+    password: "todayisawaladybug"
+  }
+}
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
@@ -108,11 +121,14 @@ app.post("/register", (req, res) => {
   console.log(req.cookie);
   res.send("Good Job!");
 })
+
+
 app.post("/login", (req, res) => {
   let username = req.body.username;
   res.cookie("username", username);
   res.redirect("/urls");
 })
+
 
 app.post("/logout", (req, res) => {
   res.clearCookie("username");
