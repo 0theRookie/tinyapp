@@ -43,8 +43,6 @@ app.get( "/urls", (req, res) => {
 
     console.log("Cookie found!");
     console.log(req.cookies["username"]);
-  } else{
-    console.log("Cookies not found!")
   }
   let templateVars = { urls: urlDatabase, username: req.cookies.username};
   res.render("pages/urls_index", templateVars);
@@ -107,6 +105,11 @@ app.post("/login", (req, res) => {
   res.redirect("/urls");
 })
 
+//|--------- /login ---------|
+app.post("/logout", (req, res) => {
+  res.clearCookie("username");
+  res.redirect("/urls");
+})
 //Server listener 
 app.listen(PORT, () => {
   console.log(`App listening on port : ${PORT}!`)

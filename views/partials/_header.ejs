@@ -7,8 +7,12 @@
 </form>
 <% } else { %>
 
-    <h2><b>Does fortune favour <%= username %> on this day?</b></h2>
+    <h2>Does fortune favour <%= username %> on this day?</h2>
 
-    <% console.log( username + " already logged in"); %>
+    <form method="POST" action="/logout">
+        <button>
+            <b>Logout</b>
+        </button>
+    </form>
 
 <% } %>
