@@ -37,8 +37,14 @@ app.get("/", (req, res) => {
 
 // |--------- /urls ---------|
 app.get( "/urls", (req, res) => { 
-  console.log('yo!!!!!!!!');
-  console.log('req.cookies', req.cookies);
+
+  if(req.cookies){
+
+    console.log("Cookies are there");
+    console.log(req.cookies["username"]);
+  } else{
+    console.log("Cookies are not there")
+  }
   let templateVars = { urls: urlDatabase, username: req.cookies.username};
   res.render("pages/urls_index", templateVars);
 });
