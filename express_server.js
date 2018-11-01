@@ -33,7 +33,11 @@ function generateRandomString() {
 //GET request + handler --> gets request
 // for root, renders response as index page
 app.get("/", (req, res) => { 
-  res.redirect("/urls");
+  if(req.cookies){
+    res.redirect("/urls");
+  } else {
+    res.redirect("/login");
+  }
 })
 
 // |--------- /urls ---------|
@@ -96,20 +100,23 @@ app.get("/urls/:id", (req, res) => {//renders new shortened url from (pages/urls
 })
 
 
-//|--------- /login ---------|
+//|--------- /login - /logout - /register ---------|
 
-
+app.get("/register", (req, res) => {
+  res.render("pages/register");
+})
 app.post("/login", (req, res) => {
   let username = req.body.username;
   res.cookie("username", username);
   res.redirect("/urls");
 })
 
-//|--------- /login ---------|
 app.post("/logout", (req, res) => {
   res.clearCookie("username");
   res.redirect("/urls");
 })
+
+
 //Server listener 
 app.listen(PORT, () => {
   console.log(`App listening on port : ${PORT}!`)
