@@ -7,9 +7,11 @@
   <header>
     <% include ../partials/_header %>
   </header>
-  <h2>Hi <%= username %>!</h2>
             
   <h1>URLs Added:</h1>
+  <form method="GET" action="/urls/new">
+    <button>New Link</button>
+</form>
 
   <ul> 
     <%for(url in urls) { %>
@@ -25,7 +27,6 @@
       
       
       </li>
-    
 
     <% }; %>
   </ul>

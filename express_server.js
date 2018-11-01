@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const app = express();
 const bodyParser = require('body-parser');
 
+
 const PORT = 8080;//setting port to listen on
 
 // set the view engine to ejs
@@ -40,10 +41,10 @@ app.get( "/urls", (req, res) => {
 
   if(req.cookies){
 
-    console.log("Cookies are there");
+    console.log("Cookie found!");
     console.log(req.cookies["username"]);
   } else{
-    console.log("Cookies are not there")
+    console.log("Cookies not found!")
   }
   let templateVars = { urls: urlDatabase, username: req.cookies.username};
   res.render("pages/urls_index", templateVars);
@@ -58,7 +59,10 @@ app.post("/urls", (req, res) => {
 
 
 app.get("/urls/new", (req, res) => {
-  res.render("pages/urls_new");
+  const templateVars = {
+    username: req.cookies.username
+  }
+  res.render("pages/urls_new", templateVars);
 })
 
 //|--------- /urls/:id ---------|
@@ -86,7 +90,8 @@ app.post("/urls/:id/delete", (req, res) => {
 app.get("/urls/:id", (req, res) => {//renders new shortened url from (pages/urls_new)
   let templateVars = { 
     shortURL: req.params.id, 
-    longURL: urlDatabase[req.params.id]
+    longURL: urlDatabase[req.params.id],
+    username: req.cookies.username
   };
   console.log(templateVars);
   res.render("pages/urls_show", templateVars);
