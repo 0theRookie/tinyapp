@@ -131,8 +131,8 @@ app.post("/register", (req, res) => {
   }
 
   users[id] = newUser;
-  // users.id["email"] = email;
-  // users.id["password"] = password;
+
+  res.cookie("id", id);
 
   console.log(users);
 
