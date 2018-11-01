@@ -46,7 +46,6 @@ app.get( "/urls", (req, res) => {
   if(req.cookies){
 
     console.log("Cookie found!");
-    console.log(req.cookies["username"]);
   }
   let templateVars = { urls: urlDatabase, username: req.cookies.username};
   res.render("pages/urls_index", templateVars);
@@ -104,6 +103,10 @@ app.get("/urls/:id", (req, res) => {//renders new shortened url from (pages/urls
 
 app.get("/register", (req, res) => {
   res.render("pages/register");
+})
+app.post("/register", (req, res) => {
+  console.log(req.cookie);
+  res.send("Good Job!");
 })
 app.post("/login", (req, res) => {
   let username = req.body.username;
