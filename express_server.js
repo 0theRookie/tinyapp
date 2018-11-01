@@ -37,7 +37,9 @@ app.get("/", (req, res) => {
 
 // |--------- /urls ---------|
 app.get( "/urls", (req, res) => { 
-  let templateVars = { urls: urlDatabase};
+  console.log('yo!!!!!!!!');
+  console.log('req.cookies', req.cookies);
+  let templateVars = { urls: urlDatabase, username: req.cookies.username};
   res.render("pages/urls_index", templateVars);
 });
 app.post("/urls", (req, res) => {
@@ -85,7 +87,16 @@ app.get("/urls/:id", (req, res) => {//renders new shortened url from (pages/urls
 })
 
 
-//Server listener - waits for request and responds
+//|--------- /login ---------|
+
+
+app.post("/login", (req, res) => {
+  let username = req.body.username;
+  res.cookie("username", username);
+  res.redirect("/urls");
+})
+
+//Server listener 
 app.listen(PORT, () => {
   console.log(`App listening on port : ${PORT}!`)
 })
