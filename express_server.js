@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 
 
 const PORT = 8080;//setting port to listen on
+const USER_COOKIE_NAME = 'userId';
 
 // set the view engine to ejs
 app.set("view engine", "ejs");
@@ -62,7 +63,7 @@ app.get( "/urls", (req, res) => {
     console.log("Cookie found!");
   }
   
-  let userId = req.cookies.userId;
+  let userId = req.cookies[USER_COOKIE_NAME];
 
   let templateVars = { 
     urls: urlDatabase, 
@@ -80,7 +81,7 @@ app.post("/urls", (req, res) => {
 
 app.get("/urls/new", (req, res) => {
   const templateVars = {
-    user: users[req.cookies["id"]],
+    user: users[req.cookies[USER_COOKIE_NAME]],
   }
   res.render("pages/urls_new", templateVars);
 })
@@ -111,7 +112,7 @@ app.get("/urls/:id", (req, res) => {//renders new shortened url from (pages/urls
   let templateVars = { 
     shortURL: req.params.id, 
     longURL: urlDatabase[req.params.id],
-    user: users[req.cookies["id"]]
+    user: users[req.cookies[USER_COOKIE_NAME]]
   }
   res.render("pages/urls_show", templateVars);
 })
@@ -147,7 +148,7 @@ app.post("/register", (req, res) => {
     }
     users[id] = newUser;
   
-    res.cookie("userId", userId);
+    res.cookie(USER_COOKIE_NAME, userId);
   
   
     res.redirect("/urls");
@@ -162,7 +163,7 @@ app.get("/login", (req, res) => {
   res.render("pages/login");
 })
 app.post("/login", (req, res) => {
-  const userId = req.cookies["id"];
+  const userId = req.cookies[USER_COOKIE_NAME];
 
 
   for(let userId in users){
@@ -172,7 +173,7 @@ app.post("/login", (req, res) => {
     } else if(users[userId].password !== req.body["password"]){
       throw new Error("403: Nope.");
     }else {
-      res.cookie("userId", userId);
+      res.cookie(USER_COOKIE_NAME, userId);
       res.redirect("/urls");
     }
   }
@@ -182,8 +183,9 @@ app.post("/login", (req, res) => {
 
 
 app.post("/logout", (req, res) => {
-  res.clearCookie("userID", userId);
-  res.redirect("/urls");
+  let userId = req.cookies[USER_COOKIE_NAME];
+  res.clearCookie(USER_COOKIE_NAME);
+  res.redirect("/");
 })
 
 
