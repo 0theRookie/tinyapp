@@ -60,16 +60,13 @@ app.get( "/urls", (req, res) => {
   if(req.cookies){
 
     console.log("Cookie found!");
-    // console.log(req.cookies.username);
   }
-  // console.log("============");
-  // console.log(users[req.cookies.userId]);
-  // console.log("============");
-
+  
+  let userId = req.cookies.userId;
 
   let templateVars = { 
     urls: urlDatabase, 
-    user: users[req.cookies["id"]]
+    user: userId
   };
   res.render("pages/urls_index", templateVars);
 });
@@ -150,7 +147,7 @@ app.post("/register", (req, res) => {
     }
     users[id] = newUser;
   
-    res.cookie("id", id);
+    res.cookie("userId", userId);
   
   
     res.redirect("/urls");
@@ -169,9 +166,6 @@ app.post("/login", (req, res) => {
 
 
   for(let userId in users){
-    // console.log('req.body.email' + );
-    // console.log(users.userId);
-    // console.log();
 
     if(users[userId].email !== req.body["email"]){
       throw new Error("403: Email not in system");
@@ -188,7 +182,7 @@ app.post("/login", (req, res) => {
 
 
 app.post("/logout", (req, res) => {
-  res.clearCookie("username");
+  res.clearCookie("userID", userId);
   res.redirect("/urls");
 })
 
