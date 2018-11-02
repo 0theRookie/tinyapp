@@ -17,7 +17,7 @@
     <%for(url in urls) { %>
       <li>
        
-        <%= url %> - <a href='#' ><%= urls[url] %></a>  
+        <%= url %> - <a href='#' ><%= urls[url] %></a> 
         <form method="POST" action="/urls/<%= url %>/delete">
           <button>Delete</button>
       </form>

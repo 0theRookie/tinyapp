@@ -17,13 +17,13 @@ app.use(bodyParser.urlencoded({extended: true}));
 const users = {
   "Bert": {
     id: "Bert",
-    email: "bertismuchsmarterthanyou@bertcanmakewebsites.com",
-    password: "gotoyourhappyplace"
+    email: "bert@bert.com",
+    password: "bert"
   },
   "Ernie": {
     id: "Ernie",
-    email: "absolutemelvin@gmail.com",
-    password: "todayisawaladybug"
+    email: "a@gmail.com",
+    password: "bert"
   }
 }
 
@@ -71,7 +71,6 @@ app.get( "/urls", (req, res) => {
     urls: urlDatabase, 
     user: users[req.cookies["id"]]
   };
-  console.log("this is the cookkie",req.cookies["id"]);
   res.render("pages/urls_index", templateVars);
 });
 app.post("/urls", (req, res) => {
@@ -79,7 +78,6 @@ app.post("/urls", (req, res) => {
   urlDatabase[shortened] = req.body.longURL;
   let longURL = `http://localhost:8080/urls/${shortened}`;
   res.redirect(longURL);        //redirects to give short url
-  console.log(urlDatabase);
 });
 
 
@@ -118,7 +116,6 @@ app.get("/urls/:id", (req, res) => {//renders new shortened url from (pages/urls
     longURL: urlDatabase[req.params.id],
     user: users[req.cookies["id"]]
   }
-  console.log(templateVars);
   res.render("pages/urls_show", templateVars);
 })
 
@@ -144,9 +141,8 @@ app.post("/register", (req, res) => {
       "email": email,
       "password": password
     }
-    console.log()
-    for(let item in users){
-      if(users[item].email === email){
+    for(let userId in users){
+      if(users[userId].email === email){
         throw new Error("400: Email already exists!");
       } else {
         console.log("Checked");
@@ -156,21 +152,39 @@ app.post("/register", (req, res) => {
   
     res.cookie("id", id);
   
-    console.log(users);
   
     res.redirect("/urls");
   }
   
 })
 
+
+
+
 app.get("/login", (req, res) => {
   res.render("pages/login");
 })
 app.post("/login", (req, res) => {
-  let username = req.body.username;
-  res.cookie("username", username);
-  res.redirect("/urls");
+  const userId = req.cookies["id"];
+
+
+  for(let userId in users){
+    // console.log('req.body.email' + );
+    // console.log(users.userId);
+    // console.log();
+
+    if(users[userId].email !== req.body["email"]){
+      throw new Error("403: Email not in system");
+    } else if(users[userId].password !== req.body["password"]){
+      throw new Error("403: Nope.");
+    }else {
+      res.cookie("userId", userId);
+      res.redirect("/urls");
+    }
+  }
 })
+
+
 
 
 app.post("/logout", (req, res) => {
