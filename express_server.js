@@ -163,7 +163,9 @@ app.post("/register", (req, res) => {
   
 })
 
-
+app.get("/login", (req, res) => {
+  res.render("pages/login");
+})
 app.post("/login", (req, res) => {
   let username = req.body.username;
   res.cookie("username", username);
