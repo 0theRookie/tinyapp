@@ -1,13 +1,13 @@
 <h1>See a need, fill a need!</h1>
 
-<% if(!username) { %>
+<% if(!user) { %>
 <form method="POST" action="/login">
     <input type="text" name="username" placeholder="Username...">
     <input type="submit" value="Login">
 </form>
 <% } else { %>
 
-    <h2>Does fortune favour <%= username %> on this day?</h2>
+    <h2>Does fortune favour <%= user %> on this day?</h2>
 
     <form method="POST" action="/logout">
         <button>
