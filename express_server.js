@@ -16,11 +16,13 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 
 const users = {
+
   "Bert": {
     id: "Bert",
     email: "bert@bert.com",
     password: "bert"
   },
+
   "Ernie": {
     id: "Ernie",
     email: "a@gmail.com",
@@ -129,26 +131,34 @@ app.post("/register", (req, res) => {
   const password = req.body.password;
   const id = generateRandomString();
 
-  if(!email || !password){
-    console.log("Missing field!")
-    throw new Error("400: Please fill out both fields");
-  } else {
+  console.log(users["id"]);
 
-    const newUser = {
-      "id": id,
-      "email": email,
-      "password": password
-    }
+  if(!email || !password){
+
+
+    res.status(400).send("Error 400: Please fill out both fields.")
+    
+  } else {
+    
     for(let userId in users){
+
       if(users[userId].email === email){
-        throw new Error("400: Email already exists!");
-      } else {
-        console.log("Checked");
+
+        res.status(400).send("Error 400: Email not valid!");
+
       }
     }
-    users[id] = newUser;
+
+    users[id] = {};
+
+    users[id].id = id;
+    users[id].email = email;
+    users[id].password = password;
+
+    console.log(`${id} registered ${email}`);
+
   
-    res.cookie(USER_COOKIE_NAME, userId);
+    res.cookie(USER_COOKIE_NAME, id);
   
   
     res.redirect("/urls");
@@ -161,21 +171,29 @@ app.post("/register", (req, res) => {
 
 app.get("/login", (req, res) => {
   res.render("pages/login");
-})
-app.post("/login", (req, res) => {
-  const userId = req.cookies[USER_COOKIE_NAME];
+});
 
-
-  for(let userId in users){
-
-    if(users[userId].email !== req.body["email"]){
-      throw new Error("403: Email not in system");
-    } else if(users[userId].password !== req.body["password"]){
-      throw new Error("403: Nope.");
-    }else {
-      res.cookie(USER_COOKIE_NAME, userId);
-      res.redirect("/urls");
+function findUserByEmailAndPassword(email, password){
+  for(const userId in users){
+    const user = users[userId];
+    if(user.email === email  && user.password === password){
+      return user;
     }
+  }
+}
+
+app.post("/login", (req, res) => {
+  const bodyEmail = req.body["email"];
+  const bodyPassword = req.body["password"];
+  console.log()
+  // console.log(users.Bert);
+  // console.log("req.cookies: ", req.cookies);
+  const user = findUserByEmailAndPassword(bodyEmail, bodyPassword);
+  if(user === undefined){
+    res.redirect('/login');
+  } else {
+    res.cookie(USER_COOKIE_NAME, user.id);
+    res.redirect('/urls');
   }
 })
 
