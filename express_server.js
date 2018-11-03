@@ -31,8 +31,19 @@ const users = {
 }
 
 const urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
+  "b2xVn2": {
+   longURL: "http://www.lighthouselabs.ca",
+   shortURL: "b2xVn2",
+   userId: "Bert"
+  },
+ 
+ 
+ 
+  "9sm5xK": {
+    longURL: "http://www.google.com",
+    shortURL:  "9sm5xK",
+    userId: "Ernie"
+  }
 }
 //use random string function
 
@@ -59,7 +70,6 @@ app.get("/", (req, res) => {
 
 // |--------- /urls ---------|
 app.get( "/urls", (req, res) => { 
-  // console.log(req.cookies)
   if(req.cookies !== undefined){
 
     console.log("Cookie found!");
