@@ -1,5 +1,6 @@
 const express = require('express');//requiring express
 const cookieParser = require('cookie-parser');
+const bcrypt = require('bcrypt');
 
 const app = express();
 const bodyParser = require('body-parser');
@@ -212,6 +213,8 @@ app.post("/register", (req, res) => {
 
   const email = req.body.email;
   const password = req.body.password;
+  const hashedPassword = bcrypt.hashSync(password, 10);
+
   const id = generateRandomString();
 
   console.log(users["id"]);
@@ -232,11 +235,15 @@ app.post("/register", (req, res) => {
       }
     }
 
-    users[id] = {};
+    users[id] = {
+      id,
+      email,
+      hashedPassword
+    };
 
-    users[id].id = id;
-    users[id].email = email;
-    users[id].password = password;
+    // users[id].id = id;
+    // users[id].email = email;
+    // users[id].password = password;
 
     console.log(`${id} registered ${email}`);
 
