@@ -173,6 +173,13 @@ app.post("/urls/:id/delete", (req, res) => {
   res.redirect("/urls");
 })
 
+app.get("/u/:id", (req, res) => {
+
+  const paramsId = req.params.id;
+  const longURL = urlDatabase[paramsId].longURL
+
+  res.redirect(longURL);
+})
 
 
 app.get("/urls/:id", (req, res) => {//renders new shortened url from (pages/urls_new)

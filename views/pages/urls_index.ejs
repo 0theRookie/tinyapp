@@ -17,7 +17,8 @@
     <%for(url in urls) { %>
       <li>
        
-        <%= urls[url].shortURL %> - <a href='#' ><%= urls[url].longURL %></a> 
+        <a target="_blank" href= <%= "u/" + urls[url].shortURL %> > <%= urls[url].shortURL %>  - <a href= <%= urls[url].longURL %> > <%= urls[url].longURL %></a> 
+
         <form method="POST" action="/urls/<%= url %>/delete">
           <button>Delete</button>
       </form>
