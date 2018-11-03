@@ -103,7 +103,7 @@ app.get( "/urls", (req, res) => {
 
   let templateVars = { 
     urls: urlsForUser(userId),
-    user: userId
+    user: users[userId]
   };
 
   res.render("pages/urls_index", templateVars);
