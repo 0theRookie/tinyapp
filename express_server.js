@@ -110,9 +110,15 @@ app.post("/urls/:id/edit", (req, res) => {
   // 1. what is :id (ie: shorturl)
   // 2. need to take that :id/shorturl and find it in db
   // 3. change the value of that shorturl in db to the new longurl
- 
-  let shortUrl = req.params.id;
+  console.log("urlDatabase[paramsId]", urlDatabase[paramsId])
+  console.log("req.cookies", req.cookies)
 
+    let shortUrl = req.params.id;
+
+  
+  // for(let key in urlDatabase){
+  //   if(urlDatabase[key] )
+  // }
   urlDatabase[shortUrl] = req.body.longURL;
   
   res.redirect("/urls");
@@ -120,19 +126,48 @@ app.post("/urls/:id/edit", (req, res) => {
 
 //deletes a URL entry from database
 app.post("/urls/:id/delete", (req, res) => {
-  delete urlDatabase[req.params.id];
+  const paramsId = req.params.id;
+  for(let key in urlDatabase){
+
+    if(urlDatabase[paramsId]){
+
+      if(urlDatabase[paramsId].userId === req.cookies.userId){
+        delete urlDatabase[paramsId];
+
+      }
+    }
+      
+  // console.log("req.params.id", req.params.id)
+  // console.log("urlDatabase[paramsId].longURL", urlDatabase[paramsId].longURL)
+  // console.log("urlDatabase[key] ",urlDatabase[key])
+  }
+  
+  // for(let key in urlDatabase){
+  //   if(urlDatabase[key])
+  // }
   res.redirect("/urls");
 })
 
 
 
 app.get("/urls/:id", (req, res) => {//renders new shortened url from (pages/urls_new)
+  const paramsId = req.params.id;
+
   let templateVars = { 
     shortURL: req.params.id, 
     longURL: urlDatabase[req.params.id],
     user: users[req.cookies[USER_COOKIE_NAME]]
   }
-  res.render("pages/urls_show", templateVars);
+
+  // console.log("urlDatabase[paramsId]", urlDatabase[paramsId])
+  // console.log("req.cookies", req.cookies)
+
+  if(urlDatabase[paramsId]){
+    if(urlDatabase[paramsId].userId === req.cookies.userId){
+      res.render("pages/urls_show", templateVars);
+    }
+  }
+  res.redirect("/urls");
 })
 
 
