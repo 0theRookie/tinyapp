@@ -59,8 +59,8 @@ app.get("/", (req, res) => {
 
 // |--------- /urls ---------|
 app.get( "/urls", (req, res) => { 
-
-  if(req.cookies){
+  // console.log(req.cookies)
+  if(req.cookies !== undefined){
 
     console.log("Cookie found!");
   }
@@ -82,6 +82,12 @@ app.post("/urls", (req, res) => {
 
 
 app.get("/urls/new", (req, res) => {
+
+  console.log('Cookies', req.cookies);
+  if(!req.cookies['userId']){
+    res.redirect("/login");
+  }
+
   const templateVars = {
     user: users[req.cookies[USER_COOKIE_NAME]],
   }
@@ -192,6 +198,7 @@ app.post("/login", (req, res) => {
   if(user === undefined){
     res.redirect('/login');
   } else {
+    
     res.cookie(USER_COOKIE_NAME, user.id);
     res.redirect('/urls');
   }
