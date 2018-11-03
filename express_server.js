@@ -1,5 +1,6 @@
 const express = require('express');//requiring express
-const cookieParser = require('cookie-parser');
+// const cookieParser = require('cookie-parser');
+const cookieSession = require('cookie-session')
 const bcrypt = require('bcrypt');
 
 const app = express();
@@ -12,7 +13,11 @@ const USER_COOKIE_NAME = 'userId';
 // set the view engine to ejs
 app.set("view engine", "ejs");
 
-app.use(cookieParser());
+app.use(cookieSession({
+  keys: ['secret'],
+ // Cookie Options
+  maxAge: 24 * 60 * 60 * 1000 // 24 hours
+}));
 app.use(bodyParser.urlencoded({extended: true}));
 
 
@@ -84,7 +89,7 @@ function generateRandomString() {
 //GET request + handler --> gets request
 // for root, renders response as index page
 app.get("/", (req, res) => { 
-  if(req.cookies){
+  if(req.session){
     res.redirect("/urls");
   } else {
     res.redirect("/login");
@@ -94,7 +99,8 @@ app.get("/", (req, res) => {
 // |--------- /urls ---------|
 
 app.get( "/urls", (req, res) => { 
-  let userId = req.cookies[USER_COOKIE_NAME];
+  // let userId = req.session[USER_COOKIE_NAME];
+  let userId = req.session.userId;
 
   if(userId){
     console.log("Cookie found!", userId);
@@ -119,12 +125,13 @@ app.post("/urls", (req, res) => {
 
 app.get("/urls/new", (req, res) => {
 
-  if(!req.cookies['userId']){
+  if(!req.session['userId']){
     res.redirect("/login");
   }
+  let userId = req.session.userId;
 
   const templateVars = {
-    user: users[req.cookies[USER_COOKIE_NAME]],
+    user: users[userId],
   }
   res.render("pages/urls_new", templateVars);
 })
@@ -144,7 +151,7 @@ app.post("/urls/:id/delete", (req, res) => {
 
     if(urlDatabase[paramsId]){
 
-      if(urlDatabase[paramsId].userId === req.cookies.userId){
+      if(urlDatabase[paramsId].userId === req.session.userId){
         delete urlDatabase[paramsId];
       }
     }
@@ -168,11 +175,11 @@ app.get("/urls/:id", (req, res) => { //renders new shortened url from (pages/url
   let templateVars = { 
     shortURL: req.params.id, 
     longURL: urlDatabase[req.params.id],
-    user: users[req.cookies[USER_COOKIE_NAME]]
+    user: users[req.session[USER_COOKIE_NAME]]
   }
 
   if(urlDatabase[paramsId]){
-    if(urlDatabase[paramsId].userId === req.cookies.userId){
+    if(urlDatabase[paramsId].userId === req.session.userId){
       res.render("pages/urls_show", templateVars);
     }
   }
@@ -210,8 +217,7 @@ app.post("/register", (req, res) => {
     };
 
     console.log(`${id} registered ${email}`);
-
-    res.cookie(USER_COOKIE_NAME, id);
+    req.session.userId = id;
     res.redirect("/urls");
   }
 })
@@ -233,7 +239,7 @@ app.post("/login", (req, res) => {
     res.redirect('/login');
 
   } else {
-    res.cookie(USER_COOKIE_NAME, user.id);
+    req.session.userId = user.id;
     res.redirect('/urls');
   }
 })
@@ -242,8 +248,8 @@ app.post("/login", (req, res) => {
 
 
 app.post("/logout", (req, res) => {
-  let userId = req.cookies[USER_COOKIE_NAME];
-  res.clearCookie(USER_COOKIE_NAME);
+  req.session.userId = null;
+
   res.redirect("/");
 })
 
