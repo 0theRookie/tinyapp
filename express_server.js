@@ -45,6 +45,28 @@ const urlDatabase = {
     userId: "Ernie"
   }
 }
+
+function findUserByEmailAndPassword(email, password){
+  for(const userId in users){
+    const user = users[userId];
+    if(user.email === email  && user.password === password){
+      return user;
+    }
+  }
+}
+
+function urlsForUser(id){
+  let userSpecificDb = {};
+  // const paramsId = req.params.id;
+
+
+  for(let key in urlDatabase){
+    if(urlDatabase[key].userId === id){
+      userSpecificDb[key] = urlDatabase[key];
+    }
+  }
+  return userSpecificDb;
+}
 //use random string function
 
 function generateRandomString() {
@@ -69,19 +91,22 @@ app.get("/", (req, res) => {
 })
 
 // |--------- /urls ---------|
-app.get( "/urls", (req, res) => { 
-  if(req.cookies !== undefined){
 
-    console.log("Cookie found!");
-  }
-  
+app.get( "/urls", (req, res) => { 
   let userId = req.cookies[USER_COOKIE_NAME];
 
+  if(userId){
+    console.log("Cookie found!", userId);
+  }
+  
+
   let templateVars = { 
-    urls: urlDatabase, 
+    urls: urlsForUser(userId),
     user: userId
   };
+
   res.render("pages/urls_index", templateVars);
+
 });
 app.post("/urls", (req, res) => {
   let shortened = generateRandomString();//shortened url string
@@ -224,14 +249,7 @@ app.get("/login", (req, res) => {
   res.render("pages/login");
 });
 
-function findUserByEmailAndPassword(email, password){
-  for(const userId in users){
-    const user = users[userId];
-    if(user.email === email  && user.password === password){
-      return user;
-    }
-  }
-}
+
 
 app.post("/login", (req, res) => {
   const bodyEmail = req.body["email"];

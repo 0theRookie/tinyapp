@@ -17,7 +17,7 @@
     <%for(url in urls) { %>
       <li>
        
-        <%= url %> - <a href='#' ><%= urls[url] %></a> 
+        <%= urls[url].shortURL %> - <a href='#' ><%= urls[url].longURL %></a> 
         <form method="POST" action="/urls/<%= url %>/delete">
           <button>Delete</button>
       </form>
@@ -30,5 +30,10 @@
 
     <% }; %>
   </ul>
+  <% if(!user){ %>
+    <h1>Please, Log In or Register for shorter links.</h1>
+
+
+  <% } %>
 </body>
 </html>
