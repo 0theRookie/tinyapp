@@ -12,7 +12,6 @@
   <form method="GET" action="/urls/new">
     <button>New Link</button>
 </form>
-
   <ul> 
     <%for(url in urls) { %>
       <li>
@@ -29,8 +28,9 @@
       
       </li>
 
-    <% }; %>
   </ul>
+<% } %>
+
   <% if(!user){ %>
     <h1>Please, Log In or Register for shorter links.</h1>
 
