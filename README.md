@@ -12,6 +12,12 @@ TinyApp is a full stack web application built with Node and Express, and allows 
 - cookie-session
 - body-parser
 
+## Screenshots
+
+!["Login Page"](https://github.com/0theRookie/tinyapp/blob/master/docs/login.png?raw=true)
+!["This page displays your new URL. You can also edit your destination from here."](https://github.com/0theRookie/tinyapp/blob/master/docs/shortenedUrl.png?raw=true)
+!["URL is accessible from home page as well."](https://github.com/0theRookie/tinyapp/blob/master/docs/urls.png?raw=true)
+
 ## "How do I get started?"
 
 1. Install all dependencies mentioned above ^
